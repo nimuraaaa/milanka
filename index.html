@@ -72,22 +72,36 @@ img {
   max-width: 300px;
   border-radius: 20px;
   margin-top: 20px;
+  opacity: 0;
 }
 
-/* Текст над фото */
+/* Текст над фото с градиентом */
 .result-text {
   max-width: 100%;
   word-wrap: break-word;
   text-align: center;
-  color: #d1005d;
   font-size: 20px;
   line-height: 1.5;
+  font-weight: bold;
+  
+  background: linear-gradient(90deg, #ff66aa, #ff99cc, #ff4da6, #ff1a8c);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 4s ease infinite;
 }
 
 /* Анимация появления контейнера с текстом и фото */
 @keyframes fadeUp {
   0% { opacity: 0; transform: translateY(40px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Анимация градиента текста */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Плавающие объекты */
@@ -177,7 +191,7 @@ yesBtn.addEventListener("click", function() {
   content.style.opacity = 0;
   content.style.animation = "fadeUp 2s forwards";
 
-  // --- Текст ---
+  // --- Текст с градиентом ---
   const text = document.createElement("p");
   text.classList.add("result-text");
   text.textContent = "Я тебя очень сильно люблю. Каждый день с тобой — это маленькое чудо, которое делает мою жизнь ярче. Твоя улыбка, доброта и забота согревают моё сердце, и я никогда не встречал такой потрясной девушки, как ты. Я ни капли не жалею, что ты есть у меня. Ты самая лучшая на свете! Я хочу быть с тобой всегда и посвятить всю жизнь тебе. Днём влюблённых, дорогая ❤️";
@@ -187,9 +201,10 @@ yesBtn.addEventListener("click", function() {
   const img = document.createElement("img");
   img.src = "photo.jpg"; // замените на путь к вашей фотке
   img.alt = "Наше фото";
+  img.style.opacity = 0;
+  img.style.animation = "fadeUp 2s forwards";
   content.appendChild(img);
 
-  // Добавляем весь контент в result
   result.appendChild(content);
 });
 
@@ -218,7 +233,6 @@ setInterval(()=>{
   const types=["heart","star","cupid"];
   createFallingObject(types[Math.floor(Math.random()*types.length)]);
 }, 300);
-
 </script>
 </body>
 </html>
