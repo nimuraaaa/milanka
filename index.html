@@ -68,11 +68,21 @@ button {
   100% { transform: scale(1); }
 }
 
+/* Фотография с рамкой и мерцанием */
 img {
   max-width: 300px;
   border-radius: 20px;
-  margin-top: 20px;
+  margin: 20px 0;
+  border-top: 4px solid #ff4da6;
+  border-bottom: 4px solid #ff99cc;
   opacity: 0;
+  animation: fadeUp 2s forwards, shimmer 3s infinite alternate;
+}
+
+@keyframes shimmer {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+  100% { filter: brightness(1); }
 }
 
 /* Текст над фото с градиентом */
@@ -83,7 +93,6 @@ img {
   font-size: 20px;
   line-height: 1.5;
   font-weight: bold;
-  
   background: linear-gradient(90deg, #ff66aa, #ff99cc, #ff4da6, #ff1a8c);
   background-size: 300% 300%;
   -webkit-background-clip: text;
@@ -91,13 +100,13 @@ img {
   animation: gradientShift 4s ease infinite;
 }
 
-/* Анимация появления контейнера с текстом и фото */
+/* Появление контейнера */
 @keyframes fadeUp {
   0% { opacity: 0; transform: translateY(40px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Анимация градиента текста */
+/* Градиент текста */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -112,30 +121,34 @@ img {
   height: 20px;
   opacity: 0.9;
   transform-origin: center;
-  border-radius: 50%;
-  box-shadow: 0 0 8px rgba(255,0,128,0.7);
-  animation-timing-function: linear;
 }
 
+/* Сердце, звезда, купидон */
 .heart {
   background: radial-gradient(circle at 30% 30%, #ff4da6, #ff1a8c);
   clip-path: polygon(50% 0%, 61% 12%, 75% 25%, 75% 50%, 50% 85%, 25% 50%, 25% 25%, 39% 12%);
 }
-
 .star {
   background: radial-gradient(circle at 50% 50%, #ffe066, #ffc107);
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
   box-shadow: 0 0 6px #fff1a8;
 }
-
 .cupid {
   background: radial-gradient(circle at 30% 30%, #ff66aa, #ff1a8c);
   clip-path: polygon(50% 0%, 61% 12%, 75% 25%, 75% 50%, 50% 85%, 25% 50%, 25% 25%, 39% 12%);
   box-shadow: 0 0 8px #ff99cc;
 }
 
+/* Лепестки сакуры */
+.sakura {
+  background: radial-gradient(circle at 30% 30%, #ffc0cb, #ff69b4);
+  clip-path: polygon(50% 0%, 60% 15%, 80% 20%, 65% 35%, 70% 60%, 50% 50%, 30% 60%, 35% 35%, 20% 20%, 40% 15%);
+  box-shadow: 0 0 6px #ffb6c1;
+}
+
+/* Анимация падения и вращения */
 @keyframes floatRotate {
-  0% { transform: translateY(-10vh) rotate(0deg) scale(0.5); opacity: 0; }
+  0% { transform: translateY(-30vh) rotate(0deg) scale(0.5); opacity: 0; }
   10% { opacity: 1; }
   50% { transform: translateY(50vh) rotate(180deg) scale(1); }
   100% { transform: translateY(110vh) rotate(360deg) scale(0.5); opacity: 0; }
@@ -183,7 +196,6 @@ yesBtn.addEventListener("click", function() {
   result.style.flexDirection = "column";
   result.style.alignItems = "center";
 
-  // --- Общий контейнер для текста и фото ---
   const content = document.createElement("div");
   content.style.display = "flex";
   content.style.flexDirection = "column";
@@ -191,18 +203,14 @@ yesBtn.addEventListener("click", function() {
   content.style.opacity = 0;
   content.style.animation = "fadeUp 2s forwards";
 
-  // --- Текст с градиентом ---
   const text = document.createElement("p");
   text.classList.add("result-text");
   text.textContent = "Я тебя очень сильно люблю. Каждый день с тобой — это маленькое чудо, которое делает мою жизнь ярче. Твоя улыбка, доброта и забота согревают моё сердце, и я никогда не встречал такой потрясной девушки, как ты. Я ни капли не жалею, что ты есть у меня. Ты самая лучшая на свете! Я хочу быть с тобой всегда и посвятить всю жизнь тебе. Днём влюблённых, дорогая ❤️";
   content.appendChild(text);
 
-  // --- Фото ---
   const img = document.createElement("img");
   img.src = "photo.jpg"; // замените на путь к вашей фотке
   img.alt = "Наше фото";
-  img.style.opacity = 0;
-  img.style.animation = "fadeUp 2s forwards";
   content.appendChild(img);
 
   result.appendChild(content);
@@ -216,6 +224,7 @@ function createFallingObject(type) {
   if(type==="heart") obj.classList.add("heart");
   else if(type==="star") obj.classList.add("star");
   else if(type==="cupid") obj.classList.add("cupid");
+  else if(type==="sakura") obj.classList.add("sakura");
 
   obj.style.left = Math.random()*100 + "vw";
   const size = Math.random()*20+16;
@@ -229,10 +238,11 @@ function createFallingObject(type) {
   setTimeout(()=>obj.remove(), duration*1000);
 }
 
+// Увеличиваем количество объектов и добавляем лепестки сакуры
 setInterval(()=>{
-  const types=["heart","star","cupid"];
+  const types=["heart","star","cupid","sakura","sakura","sakura"];
   createFallingObject(types[Math.floor(Math.random()*types.length)]);
-}, 300);
+}, 120); // чаще, чтобы было больше объектов
 </script>
 </body>
 </html>
