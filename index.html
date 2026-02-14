@@ -88,11 +88,16 @@ img {
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const result = document.getElementById("result");
+const container = document.querySelector(".container"); // 👈 добавили container
 
-// Убегающая кнопка "Нет"
+// Убегающая кнопка "Нет" (ограничена контейнером)
 noBtn.addEventListener("mouseover", function() {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
+
+    const rect = container.getBoundingClientRect();
+
+    const x = Math.random() * (rect.width - noBtn.offsetWidth);
+    const y = Math.random() * (rect.height - noBtn.offsetHeight);
+
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 });
