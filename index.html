@@ -68,21 +68,37 @@ button {
   100% { transform: scale(1); }
 }
 
-/* Фотография с рамкой и мерцанием */
+/* Фотография с мерцающей и переливающейся рамкой */
 img {
   max-width: 300px;
   border-radius: 20px;
   margin: 20px 0;
-  border-top: 4px solid #ff4da6;
-  border-bottom: 4px solid #ff99cc;
+  padding-top: 4px;    /* верхняя рамка */
+  padding-bottom: 4px; /* нижняя рамка */
+  background: linear-gradient(270deg, #ff9ecf, #ffb6c1, #ff66aa, #ff99cc);
+  background-size: 600% 600%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: top, bottom;
+  -webkit-mask-size: 100% 4px, 100% 4px;
   opacity: 0;
-  animation: fadeUp 2s forwards, shimmer 3s infinite alternate;
+  animation: fadeUp 2s forwards, shimmer 3s infinite alternate, borderShift 6s ease-in-out infinite;
 }
 
+/* Мерцание самой фотографии */
 @keyframes shimmer {
   0% { filter: brightness(1); }
   50% { filter: brightness(1.2); }
   100% { filter: brightness(1); }
+}
+
+/* Анимация переливания рамки */
+@keyframes borderShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Текст над фото с градиентом и лёгким колебанием */
@@ -174,7 +190,7 @@ img {
 
 <body>
 
-<audio id="clickSound" src="click.mp3"></audio> <!-- добавь файл click.mp3 -->
+<audio id="clickSound" src="click.mp3"></audio>
 
 <div class="container">
   <div id="initial">
