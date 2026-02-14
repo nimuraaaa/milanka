@@ -74,7 +74,7 @@ img {
   margin-top: 20px;
   opacity: 0;
   transform: scale(0.8);
-  animation: zoomFadeIn 1.2s forwards;
+  animation: zoomFadeIn 1s forwards;
 }
 
 @keyframes zoomFadeIn {
@@ -91,7 +91,7 @@ img {
   font-size: 20px;
   line-height: 1.5;
   opacity: 0;
-  animation: textFadeIn 1.2s forwards;
+  animation: textFadeIn 1.5s forwards;
 }
 
 @keyframes textFadeIn {
@@ -181,13 +181,20 @@ yesBtn.addEventListener("click", function() {
   // --- Текст над фото ---
   const text = document.createElement("p");
   text.classList.add("result-text");
+  text.style.opacity = 0; // начинаем с невидимого
   text.textContent = "Я так и знал что будешь) Я тебя очень сильно люблю, я никогда не встречал такой потрясной девушки как ты, я ни капли не жалею что ты есть у меня. Ты самая лучшая на свете! С Днём влюблённых дорогая 💖";
   result.appendChild(text);
+
+  // Плавное появление текста
+  setTimeout(()=>{ text.style.animation = "textFadeIn 1.5s forwards"; }, 50);
 
   // --- Фото ---
   const img = document.createElement("img");
   img.src = "photo.jpg"; // замените на путь к вашей фотке
   img.alt = "Наше фото";
+  img.style.opacity = 0;
+  img.style.animation = "zoomFadeIn 1s forwards";
+  img.style.animationDelay = "1.5s"; // появляется после текста
   result.appendChild(img);
 });
 
