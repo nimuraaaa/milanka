@@ -73,11 +73,11 @@ img {
   max-width: 300px;
   border-radius: 20px;
   margin: 20px 0;
-  padding: 4px; /* рамка сверху и снизу */
+  padding: 4px;
   border: 4px solid;
   border-image: linear-gradient(270deg, #ff9ecf, #ffc0cb, #ff66aa, #ff99cc);
   border-image-slice: 1;
-  opacity: 0; /* пока не загружено */
+  opacity: 0;
   transition: opacity 1s ease;
   animation: borderShift 6s ease-in-out infinite;
 }
@@ -91,7 +91,6 @@ img {
   100% { border-image-source: linear-gradient(270deg, #ff9ecf, #ffc0cb, #ff66aa, #ff99cc); }
 }
 
-/* Текст над фото с градиентом и лёгким колебанием */
 .result-text {
   max-width: 100%;
   word-wrap: break-word;
@@ -143,7 +142,6 @@ img {
 
 </style>
 </head>
-
 <body>
 
 <audio id="clickSound" src="click.mp3"></audio>
@@ -200,19 +198,23 @@ yesBtn.addEventListener("click", function() {
   text.textContent = "Я тебя очень сильно люблю. Каждый день с тобой — это маленькое чудо, которое делает мою жизнь ярче. Твоя улыбка, доброта и забота согревают моё сердце, и я никогда не встречал такой потрясной девушки, как ты. Я ни капли не жалею, что ты есть у меня. Ты самая лучшая на свете! Я хочу быть с тобой всегда и посвятить всю жизнь тебе. Днём влюблённых, дорогая ❤️";
   content.appendChild(text);
 
-  // Создаем фото и ждем полной загрузки
+  // Создаем фото
   const img = document.createElement("img");
   img.src = "photo.jpg";
   img.alt = "Наше фото";
-  img.onload = () => {
+  img.style.opacity = 0; // скрываем до полной загрузки
+  content.appendChild(img); // добавляем сразу
+
+  // Когда фото загрузилось, плавно показываем
+  img.addEventListener("load", () => {
+    img.style.transition = "opacity 1s ease";
     img.style.opacity = 1;
-    content.appendChild(img); // добавляем только после загрузки
-  };
+  });
 
   result.appendChild(content);
 
   // Confetti эффект
-  for(let i=0;i<30;i++){
+  for (let i=0;i<30;i++){
     const confetti = document.createElement("div");
     confetti.classList.add("confetti");
     confetti.style.left = (50 + (Math.random()-0.5)*30) + "vw";
