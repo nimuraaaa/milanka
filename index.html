@@ -68,29 +68,40 @@ button {
   100% { transform: scale(1); }
 }
 
-/* Фотография с плавной переливающейся рамкой */
+/* Фотография с мерцающей и переливающейся рамкой */
 img {
   max-width: 300px;
   border-radius: 20px;
   margin: 20px 0;
-  padding: 4px;
-  border: 4px solid;
-  border-image: linear-gradient(270deg, #ff9ecf, #ffc0cb, #ff66aa, #ff99cc);
-  border-image-slice: 1;
+  padding-top: 4px;    /* верхняя рамка */
+  padding-bottom: 4px; /* нижняя рамка */
+  background: linear-gradient(270deg, #ff9ecf, #ffb6c1, #ff66aa, #ff99cc);
+  background-size: 600% 600%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: top, bottom;
+  -webkit-mask-size: 100% 4px, 100% 4px;
   opacity: 0;
-  transition: opacity 1s ease;
-  animation: borderShift 6s ease-in-out infinite;
+  animation: fadeUp 2s forwards, shimmer 3s infinite alternate, borderShift 6s ease-in-out infinite;
 }
 
-/* Перелив рамки */
+/* Мерцание самой фотографии */
+@keyframes shimmer {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+  100% { filter: brightness(1); }
+}
+
+/* Анимация переливания рамки */
 @keyframes borderShift {
-  0% { border-image-source: linear-gradient(270deg, #ff9ecf, #ffc0cb, #ff66aa, #ff99cc); }
-  25% { border-image-source: linear-gradient(270deg, #ffc0cb, #ffb6c1, #ff66aa, #ff99cc); }
-  50% { border-image-source: linear-gradient(270deg, #ff66aa, #ffc0cb, #ffb6c1, #ff99cc); }
-  75% { border-image-source: linear-gradient(270deg, #ff99cc, #ff66aa, #ffc0cb, #ffb6c1); }
-  100% { border-image-source: linear-gradient(270deg, #ff9ecf, #ffc0cb, #ff66aa, #ff99cc); }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
+/* Текст над фото с градиентом и лёгким колебанием */
 .result-text {
   max-width: 100%;
   word-wrap: break-word;
@@ -105,11 +116,19 @@ img {
   animation: gradientShift 4s ease infinite, floatText 3s ease-in-out infinite;
 }
 
+/* Анимация покачивания текста */
 @keyframes floatText {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-5px); }
 }
 
+/* Появление контейнера */
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Градиент текста */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -126,11 +145,30 @@ img {
   transform-origin: center;
 }
 
-.heart { background: radial-gradient(circle at 30% 30%, #ff4da6, #ff1a8c); clip-path: polygon(50% 0%, 61% 12%, 75% 25%, 75% 50%, 50% 85%, 25% 50%, 25% 25%, 39% 12%); }
-.star { background: radial-gradient(circle at 50% 50%, #ffe066, #ffc107); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); box-shadow: 0 0 6px #fff1a8; }
-.cupid { background: radial-gradient(circle at 30% 30%, #ff66aa, #ff1a8c); clip-path: polygon(50% 0%, 61% 12%, 75% 25%, 75% 50%, 50% 85%, 25% 50%, 25% 25%, 39% 12%); box-shadow: 0 0 8px #ff99cc; }
-.sakura { background: radial-gradient(circle at 30% 30%, #ffc0cb, #ff69b4); clip-path: polygon(50% 0%, 60% 15%, 80% 20%, 65% 35%, 70% 60%, 50% 50%, 30% 60%, 35% 35%, 20% 20%, 40% 15%); box-shadow: 0 0 6px #ffb6c1; }
+/* Сердце, звезда, купидон */
+.heart {
+  background: radial-gradient(circle at 30% 30%, #ff4da6, #ff1a8c);
+  clip-path: polygon(50% 0%, 61% 12%, 75% 25%, 75% 50%, 50% 85%, 25% 50%, 25% 25%, 39% 12%);
+}
+.star {
+  background: radial-gradient(circle at 50% 50%, #ffe066, #ffc107);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  box-shadow: 0 0 6px #fff1a8;
+}
+.cupid {
+  background: radial-gradient(circle at 30% 30%, #ff66aa, #ff1a8c);
+  clip-path: polygon(50% 0%, 61% 12%, 75% 25%, 75% 50%, 50% 85%, 25% 50%, 25% 25%, 39% 12%);
+  box-shadow: 0 0 8px #ff99cc;
+}
 
+/* Лепестки сакуры */
+.sakura {
+  background: radial-gradient(circle at 30% 30%, #ffc0cb, #ff69b4);
+  clip-path: polygon(50% 0%, 60% 15%, 80% 20%, 65% 35%, 70% 60%, 50% 50%, 30% 60%, 35% 35%, 20% 20%, 40% 15%);
+  box-shadow: 0 0 6px #ffb6c1;
+}
+
+/* Анимация падения и вращения */
 @keyframes floatRotate {
   0% { transform: translateY(-30vh) rotate(0deg) scale(0.5); opacity: 0; }
   10% { opacity: 1; }
@@ -138,10 +176,18 @@ img {
   100% { transform: translateY(110vh) rotate(360deg) scale(0.5); opacity: 0; }
 }
 
-.confetti { position: absolute; width: 15px; height: 15px; pointer-events: none; opacity: 0.9; border-radius: 50%; }
-
+/* Конфетти (сердца и звезды) */
+.confetti {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+  opacity: 0.9;
+  border-radius: 50%;
+}
 </style>
 </head>
+
 <body>
 
 <audio id="clickSound" src="click.mp3"></audio>
@@ -198,23 +244,15 @@ yesBtn.addEventListener("click", function() {
   text.textContent = "Я тебя очень сильно люблю. Каждый день с тобой — это маленькое чудо, которое делает мою жизнь ярче. Твоя улыбка, доброта и забота согревают моё сердце, и я никогда не встречал такой потрясной девушки, как ты. Я ни капли не жалею, что ты есть у меня. Ты самая лучшая на свете! Я хочу быть с тобой всегда и посвятить всю жизнь тебе. Днём влюблённых, дорогая ❤️";
   content.appendChild(text);
 
-  // Создаем фото
   const img = document.createElement("img");
-  img.src = "photo.jpg";
+  img.src = "photo.jpg"; 
   img.alt = "Наше фото";
-  img.style.opacity = 0; // скрываем до полной загрузки
-  content.appendChild(img); // добавляем сразу
-
-  // Когда фото загрузилось, плавно показываем
-  img.addEventListener("load", () => {
-    img.style.transition = "opacity 1s ease";
-    img.style.opacity = 1;
-  });
+  content.appendChild(img);
 
   result.appendChild(content);
 
   // Confetti эффект
-  for (let i=0;i<30;i++){
+  for(let i=0;i<30;i++){
     const confetti = document.createElement("div");
     confetti.classList.add("confetti");
     confetti.style.left = (50 + (Math.random()-0.5)*30) + "vw";
@@ -257,7 +295,7 @@ function createFallingObject(type) {
   setTimeout(()=>obj.remove(), duration*1000);
 }
 
-// Лепестки и объекты
+// Увеличиваем количество объектов и добавляем лепестки сакуры
 setInterval(()=>{
   const types=["heart","star","cupid","sakura","sakura","sakura"];
   createFallingObject(types[Math.floor(Math.random()*types.length)]);
