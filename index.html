@@ -67,24 +67,33 @@ img {
     border-radius: 20px;
     margin-top: 20px;
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 2s forwards;
+    transform: scale(0.8);
+    animation: zoomFadeIn 1.2s forwards;
 }
 
-.hearts {
+.falling {
     position: fixed;
-    font-size: 24px;
-    animation: float 6s linear infinite;
+    pointer-events: none;
+    animation-timing-function: linear;
 }
 
-@keyframes float {
-    0% { transform: translateY(100vh); opacity: 1; }
-    100% { transform: translateY(-10vh); opacity: 0; }
-}
-
+/* Анимации */
 @keyframes fadeIn {
     0% { opacity: 0; transform: translateY(20px); }
+    80% { opacity: 1; transform: translateY(-10px); }
     100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomFadeIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Кружение и падение */
+@keyframes floatRotate {
+    0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(110vh) translateX(30px) rotate(360deg); opacity: 0; }
 }
 </style>
 </head>
@@ -116,46 +125,62 @@ noBtn.addEventListener("mouseover", function() {
 
 // При нажатии "Да"
 yesBtn.addEventListener("click", function() {
-    // Скрываем начальный блок
     const initial = document.getElementById("initial");
     initial.style.display = "none";
 
-    // Показываем блок результата
     const result = document.getElementById("result");
     result.style.display = "flex";
     result.style.flexDirection = "column";
     result.style.alignItems = "center";
 
-    // Добавляем текст
+    // Текст с подпрыгиванием
     const text = document.createElement("h2");
     text.textContent = "Я так и знал что будешь) Я тебя очень сильно люблю, " +
         "я никогда не встречал такой потрясной девушки как ты, " +
         "я ни капли не жалею что ты есть у меня. Ты самая лучшая на свете! " +
         "С Днём влюблённых 💖";
     text.style.opacity = 0;
-    text.style.animation = "fadeIn 2s forwards";
+    text.style.animation = "fadeIn 1.5s forwards";
     result.appendChild(text);
 
-    // Добавляем фото с небольшой задержкой
+    // Фото с zoom-in через 0.7s
     const img = document.createElement("img");
-    img.src = "photo.jpg";
+    img.src = "photo.jpg"; // путь к твоему фото
     img.alt = "Наше фото";
     img.style.opacity = 0;
-    img.style.animation = "fadeIn 2s forwards";
+    img.style.animation = "zoomFadeIn 1.2s forwards";
     img.style.animationDelay = "0.7s";
     result.appendChild(img);
 });
 
-// Анимация сердечек
+// Функция для создания кружащихся объектов
+function createFallingObject(symbol) {
+    const obj = document.createElement("div");
+    obj.classList.add("falling");
+    obj.innerHTML = symbol;
+
+    // Случайная позиция и размер
+    obj.style.left = Math.random() * 100 + "vw";
+    const size = Math.random() * 20 + 16;
+    obj.style.fontSize = size + "px";
+
+    // Случайная скорость и поворот
+    const duration = Math.random() * 4 + 3; // 3-7 секунд
+    obj.style.animation = `floatRotate ${duration}s linear forwards`;
+
+    document.body.appendChild(obj);
+
+    // Удаление после анимации
+    setTimeout(() => obj.remove(), duration * 1000);
+}
+
+// Интервал генерации падающих объектов
 setInterval(() => {
-    const heart = document.createElement("div");
-    heart.classList.add("hearts");
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-}, 500);
+    const symbols = ["💖", "✨", "💕"]; // сердечки, звездочки, сердечки с крылышками
+    const sym = symbols[Math.floor(Math.random() * symbols.length)];
+    createFallingObject(sym);
+}, 300);
+
 </script>
 
 </body>
