@@ -24,6 +24,8 @@ body {
     border-radius: 25px;
     box-shadow: 0 0 30px rgba(255, 0, 128, 0.5);
     position: relative;
+    width: 90%;
+    max-width: 500px;
 }
 
 h1 {
@@ -78,50 +80,20 @@ img {
 <body>
 
 <div class="container">
-    <h1>Будешь меня любить как Розанов любил Холднера? 💖</h1>
-    <button id="yes">Да</button>
-    <button id="no">Нет</button>
-    <div id="result"></div>
+    <div id="initial">
+        <h1>Будешь меня любить как Розанов любил Холднера? 💖</h1>
+        <button id="yes">Да</button>
+        <button id="no">Нет</button>
+    </div>
+    <div id="result" style="display: none;"></div>
 </div>
 
 <script>
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const result = document.getElementById("result");
-const container = document.querySelector(".container"); // 👈 добавили container
+const initial = document.getElementById("initial");
+const container = document.querySelector(".container");
 
-// Убегающая кнопка "Нет" (ограничена контейнером)
+// Убегающая кнопка "Нет"
 noBtn.addEventListener("mouseover", function() {
-
-    const rect = container.getBoundingClientRect();
-
-    const x = Math.random() * (rect.width - noBtn.offsetWidth);
-    const y = Math.random() * (rect.height - noBtn.offsetHeight);
-
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-});
-
-// При нажатии "Да"
-yesBtn.addEventListener("click", function() {
-    result.innerHTML = `
-        <h2 style="color:#d1005d;">я так и знал что будешь) я тебя очень сильно люблю я никогда не встречал такой потрясной девушки как ты, я ни капли не жалею что ты есть у меня ты самая лучшая на свете с днем влюбленных дорогая 💖</h2>
-        <img src="photo.jpg" alt="Наше фото">
-    `;
-});
-
-// Сердечки
-setInterval(() => {
-    const heart = document.createElement("div");
-    heart.classList.add("hearts");
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-}, 500);
-</script>
-
-</body>
-</html>
-
