@@ -26,9 +26,13 @@ body {
     position: relative;
     width: 90%;
     max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-h1 {
+h1, h2 {
     color: #d1005d;
     font-size: 26px;
 }
@@ -58,6 +62,15 @@ button {
     position: absolute;
 }
 
+img {
+    max-width: 300px;
+    border-radius: 20px;
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 2s forwards;
+}
+
 .hearts {
     position: fixed;
     font-size: 24px;
@@ -69,10 +82,9 @@ button {
     100% { transform: translateY(-10vh); opacity: 0; }
 }
 
-img {
-    max-width: 300px;
-    border-radius: 20px;
-    margin-top: 20px;
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -91,9 +103,60 @@ img {
 <script>
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
-const result = document.getElementById("result");
-const initial = document.getElementById("initial");
 const container = document.querySelector(".container");
 
 // Убегающая кнопка "Нет"
 noBtn.addEventListener("mouseover", function() {
+    const rect = container.getBoundingClientRect();
+    const x = Math.random() * (rect.width - noBtn.offsetWidth);
+    const y = Math.random() * (rect.height - noBtn.offsetHeight);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+// При нажатии "Да"
+yesBtn.addEventListener("click", function() {
+    // Скрываем начальный блок
+    const initial = document.getElementById("initial");
+    initial.style.display = "none";
+
+    // Показываем блок результата
+    const result = document.getElementById("result");
+    result.style.display = "flex";
+    result.style.flexDirection = "column";
+    result.style.alignItems = "center";
+
+    // Добавляем текст
+    const text = document.createElement("h2");
+    text.textContent = "Я так и знал что будешь) Я тебя очень сильно люблю, " +
+        "я никогда не встречал такой потрясной девушки как ты, " +
+        "я ни капли не жалею что ты есть у меня. Ты самая лучшая на свете! " +
+        "С Днём влюблённых 💖";
+    text.style.opacity = 0;
+    text.style.animation = "fadeIn 2s forwards";
+    result.appendChild(text);
+
+    // Добавляем фото с небольшой задержкой
+    const img = document.createElement("img");
+    img.src = "photo.jpg";
+    img.alt = "Наше фото";
+    img.style.opacity = 0;
+    img.style.animation = "fadeIn 2s forwards";
+    img.style.animationDelay = "0.7s";
+    result.appendChild(img);
+});
+
+// Анимация сердечек
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("hearts");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}, 500);
+</script>
+
+</body>
+</html>
